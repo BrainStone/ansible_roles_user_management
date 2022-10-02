@@ -11,12 +11,6 @@
     shell: /bin/bash
     password_lock: true
 
-- name: Configure SSH (Including forcing public key for Ansible User)
-  ansible.builtin.template:
-    src: ansible/sshd_config.j2
-    dest: /etc/ssh/sshd_config
-  notify: Restart sshd
-
 - name: Allow Ansible User passwordless sudo
   ansible.builtin.template:
     src: ansible/sudo.j2
