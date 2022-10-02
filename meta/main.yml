@@ -1,0 +1,23 @@
+galaxy_info:
+  role_name: user_management
+  author: Yannick Schinko @BrainStone
+  description: Powerful Ansible role to manage user accounts on your systems. Adds and removes users easily, sets their passwords, groups and authorized_keys.
+
+  license: MIT
+
+  min_ansible_version: 2.9
+  
+  # Works with pretty much all Linux versions. Potentially even UNIX (but untested)
+  platforms:
+    - name: GenericLinux
+      versions:
+        - all
+
+  galaxy_tags:
+    - users
+    - user_management
+    - ssh
+    - sudo
+    - security
+
+dependencies: [ ]
