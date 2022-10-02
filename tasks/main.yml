@@ -1,6 +1,6 @@
 ---
 - include_tasks: ansible.yml
-  when: auth_add_ansible_user | bool
+  when: user_management_add_ansible_user | bool
   
 - include_tasks: add_users.yml
 
