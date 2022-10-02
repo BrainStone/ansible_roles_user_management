@@ -28,12 +28,30 @@ Only Ansible Builitins.
 
 ## Example Playbook
 
-I personally recommend using `host_vars` or `group_vars`, but a simple copy pastable block looks like this:
+I personally recommend using `host_vars` or `group_vars`, but a simple copy pastable block looks like this (the keys and passwords aren't real btw):
 
 ```yaml
 - hosts: servers
   roles:
     - role: brainstone.user_management
+      vars:
+        all_user_attrs:
+          # Existing users
+          test:
+            state: present
+            admin: yes
+            groups:
+              - testing
+            shell: '/bin/zsh'
+            password: '$6$e9zHRubiopmvCu4u$3O1FAv04lq8yBfhgfjhgkgheQHaIoFSOK9jTbqtoowcoUfp6liSlbw7c9a001CJu6O.lol4uMnLxrbpk3vOMGVg529oU4dI/'
+            ssh_keys:
+              - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH6qb4d6mytVq4W4q9X6DHU24g1UygnmF3do1oC5lkmG cb:6c:cc:c6:ab:64:aa:4b:6b:e9:02:3e:c4:22:6d:c9 Key 1'
+              - 'ecdsa-sha2-nistp256 BBBBE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHJghjksgfo78JABBBAlyHkM0Hqglp4VWqnjf7dl0M68YkEr8CK87Ww6s3ZV8DNDbVaLFK++L+qJc+tSxI+5Y3r2sN6Atht9u4= Key 2'
+          dummy: { }
+
+          # Removed users
+          debian:
+            state: absent
 ```
 
 ## License
