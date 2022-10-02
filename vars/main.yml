@@ -1,0 +1,37 @@
+---
+# Whether to add the user or not
+user_management_add_ansible_user: "{{ (user_management_ansible_auth_key | length) > 0 }}"
+
+# Calculate the authorized and unauthorized users
+# Essentially split the variable user_management_all_user_attrs into two groups. One where the state
+# is not defined or not set to "absent" and one where the state is defined and set to "absent".
+user_management_authorized_users: >
+  {{
+    (
+      (
+        (
+          user_management_all_user_attrs | dict2items |
+          selectattr('value.state', 'defined') |
+          rejectattr('value.state', 'eq', 'absent') |
+          list
+        ) +
+        (
+          user_management_all_user_attrs | dict2items |
+          rejectattr('value.state', 'defined') |
+          list
+        )
+      ) | items2dict
+    ).keys()
+  }}
+
+user_management_unauthorized_users: >
+  {{
+    (
+      (
+        user_management_all_user_attrs | dict2items |
+        selectattr('value.state', 'defined') |
+        selectattr('value.state', 'eq', 'absent') |
+        list
+      ) | items2dict
+    ).keys()
+  }}

@@ -1,0 +1,6 @@
+---
+# If this is empty, we won't add the ansible user
+user_management_ansible_auth_key: ''
+
+# A dictionary of all users. See README.md for how to use this
+user_management_all_user_attrs: { }
