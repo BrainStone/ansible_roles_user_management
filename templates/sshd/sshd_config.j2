@@ -105,7 +105,7 @@ AcceptEnv LANG LC_*
 
 # override default of no subsystems
 Subsystem	sftp	/usr/lib/openssh/sftp-server
-{% if user_management_add_ansible_user %} 
+{% if user_management_add_ansible_user %}
 
 # Ansible User
 Match User ansible
