@@ -1,0 +1,30 @@
+- name: Add Ansible User
+  user:
+    name: ansible
+    comment: Ansible User
+    state: present
+    password: !
+    system: true
+    create_home: true
+    home: /home/ansible
+    shell: /bin/bash
+    password_lock: true
+
+- name: Configure SSH (Including forcing public key for Ansible User)
+  template:
+    src: ansible/sshd_config.j2
+    dest: /etc/ssh/sshd_config
+  notify: Restart sshd
+
+- name: Allow Ansible User passwordless sudo
+  template:
+    src: ansible/sudo.j2
+    dest: /etc/sudoers.d/01-ansible
+
+- name: Set Authorized Key
+  authorized_key:
+    exclusive: true
+    state: present
+    user: ansible
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEcRuKFHiOV6ct6KZJaYG//+jW43phDlutizsFX1cUco 83:96:c5:e6:0d:d2:d4:9d:a8:6a:0d:d4:46:d0:03:3b Ansible Master Key
+    path: /home/ansible/.ssh/authorized_keys

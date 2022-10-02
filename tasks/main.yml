@@ -1,0 +1,5 @@
+- include_tasks: ansible.yml
+  
+- include_tasks: add_users.yml
+
+- include_tasks: remove_users.yml

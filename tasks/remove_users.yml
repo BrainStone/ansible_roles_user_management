@@ -1,0 +1,19 @@
+- name: Stop user processes
+  shell: "if pgrep -u {{ item }}; then pkill -9 -u {{ item }}; fi"
+  with_items: "{{ unauthorized_users }}"
+  tags:
+    - auth_accounts
+    - auth_deletion
+  register: stop_user_result
+  changed_when: stop_user_result.stdout != ""
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Delete accounts
+  user:
+    name: "{{ item }}"
+    state: absent
+    remove: yes
+  with_items: "{{ unauthorized_users }}"
+  tags:
+    - auth_accounts
+    - auth_deletion

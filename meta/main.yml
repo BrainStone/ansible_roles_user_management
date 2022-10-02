@@ -14,10 +14,11 @@ galaxy_info:
         - all
 
   galaxy_tags:
-    - users
-    - user_management
+    - auth
+    - security
     - ssh
     - sudo
-    - security
+    - user_management
+    - users
 
 dependencies: [ ]
