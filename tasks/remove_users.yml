@@ -1,6 +1,6 @@
 ---
 - name: Stop user processes
-  ansible.builtin.shell: "pgrep -u {{ item }} && pkill -9 -u {{ item }}"
+  ansible.builtin.shell: "pgrep -u {{ item }} && pkill -9 -u {{ item }} || true"
   with_items: "{{ user_management_unauthorized_users }}"
   tags:
     - auth_accounts
