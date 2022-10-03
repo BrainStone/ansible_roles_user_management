@@ -17,4 +17,19 @@ user_management_sshd_permit_root_login: 'without-password'
 user_management_sshd_local_password_authentication: true
 user_management_sshd_local_permit_root_login: 'without-password'
 # List of local subnets
-user_management_sshd_local_subnets: [ ]
+# How it works
+# - filters out interfaces `lo` and `dockerX`
+# - gets the facts of all network interfaces (`ansible_facts[<interface>]`)
+# - filters out inactive interfaces
+# - generates the string `<network>/<netmask>` for every remaining network
+# - turns that into CIDR notation
+user_management_sshd_local_subnets: >
+  {{
+    ansible_facts | dict2items |
+    selectattr('key', 'in',
+      ansible_interfaces | reject('match', '^(lo|docker[0-9]+)$') | list
+    ) |
+    selectattr('value.active', 'true') |
+    json_query('[].value.ipv4.[network, netmask].join(`/`, @)') |
+    map('ansible.utils.ipaddr', 'network/prefix')
+  }}

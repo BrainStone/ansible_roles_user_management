@@ -28,6 +28,23 @@ This requirement may drop at a later stage.
 | `user_management_sshd_local_permit_root_login`       | Same as `user_management_sshd_permit_root_login`, but only applies to local connections as defined in `user_management_sshd_local_subnets`                                                                                                                                                                   |
 | `user_management_sshd_local_subnets`                 | Which subnets to consider "local". If set to an empty list, this feature is disabled.                                                                                                                                                                                                                        |
 
+`user_management_sshd_local_subnets` is generated with this template expression by default (how it works is explained in the `defaults/main.yml`):
+```yaml
+user_management_sshd_local_subnets: >
+  {{
+    ansible_facts | dict2items |
+    selectattr('key', 'in',
+      ansible_interfaces | reject('match', '^(lo|docker[0-9]+)$') | list
+    ) |
+    selectattr('value.active', 'true') |
+    json_query('[].value.ipv4.[network, netmask].join(`/`, @)') |
+    map('ansible.utils.ipaddr', 'network/prefix')
+  }}
+```
+
+If your Ansible is too old (older than 2.11), it'll complain about it not being able to find `ansible.utils.ipaddr`. Change it to `ipaddr` and you're good 
+to go!
+
 ## Dependencies
 
 Only Ansible Builitins.
