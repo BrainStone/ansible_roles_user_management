@@ -123,7 +123,7 @@ Match User ansible
 	((user_management_sshd_local_subnets | length) > 0) and
 	(
 		(user_management_sshd_local_password_authentication != user_management_sshd_password_authentication) or
-		(user_management_sshd_local_permit_root_login       != user_management_sshd__permit_root_login)
+		(user_management_sshd_local_permit_root_login       != user_management_sshd_permit_root_login)
 	)
 %}
 

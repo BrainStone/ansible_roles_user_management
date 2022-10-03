@@ -17,4 +17,4 @@ user_management_sshd_permit_root_login: 'without-password'
 user_management_sshd_local_password_authentication: true
 user_management_sshd_local_permit_root_login: 'without-password'
 # List of local subnets
-user_management_sshd_local_subnets: []
+user_management_sshd_local_subnets: [ ]
