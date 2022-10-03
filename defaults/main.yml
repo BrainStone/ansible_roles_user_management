@@ -27,7 +27,7 @@ user_management_sshd_local_subnets: >
   {{
     ansible_facts | dict2items |
     selectattr('key', 'in',
-      ansible_interfaces | reject('match', '^(lo|docker[0-9]+)$') | list
+      ansible_interfaces | reject('match', '^(lo|docker[0-9]+)$') | sort
     ) |
     selectattr('value.active', 'true') |
     json_query('[].value.ipv4.[network, netmask].join(`/`, @)') |
