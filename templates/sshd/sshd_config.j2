@@ -2,6 +2,10 @@
 
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
+{% if user_management_sshd_include %}
+
+Include /etc/ssh/sshd_config.d/*.conf
+{% endif %}
 
 Port 22
 #AddressFamily any

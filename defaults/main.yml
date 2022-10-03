@@ -4,3 +4,7 @@ user_management_ansible_auth_key: ''
 
 # A dictionary of all users. See README.md for how to use this
 user_management_all_user_attrs: { }
+
+# Whether to include the config files under /etc/ssh/sshd_config.d/*.conf
+# Some sshd versions don't support that setting, so turn it off for those
+user_management_sshd_include: true
