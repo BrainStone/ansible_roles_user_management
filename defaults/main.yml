@@ -8,3 +8,7 @@ user_management_all_user_attrs: { }
 # Whether to include the config files under /etc/ssh/sshd_config.d/*.conf
 # Some sshd versions don't support that setting, so turn it off for those
 user_management_sshd_include: true
+
+# These two variables control which authentication types are allowed
+user_management_sshd_password_authentication: true
+user_management_sshd_permit_root_login: 'without-password'

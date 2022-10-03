@@ -26,7 +26,7 @@ Port 22
 # Authentication:
 
 #LoginGraceTime 2m
-PermitRootLogin yes
+PermitRootLogin {{ user_management_sshd_permit_root_login == 'without-password' | ternary('without-password', user_management_sshd_permit_root_login | bool | ternary('yes', 'no')) }}
 #StrictModes yes
 #MaxAuthTries 6
 #MaxSessions 10
@@ -50,7 +50,7 @@ PubkeyAuthentication yes
 #IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
-PasswordAuthentication yes
+PasswordAuthentication {{ user_management_sshd_password_authentication | bool | ternary('yes', 'no') }}
 PermitEmptyPasswords no
 
 # Change to yes to enable challenge-response passwords (beware issues with
