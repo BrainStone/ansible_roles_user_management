@@ -119,3 +119,16 @@ Match User ansible
 	AllowAgentForwarding yes
 	Banner none
 {% endif %}
+{% if
+	((user_management_sshd_local_subnets | length) > 0) and
+	(
+		(user_management_sshd_local_password_authentication != user_management_sshd_password_authentication) or
+		(user_management_sshd_local_permit_root_login       != user_management_sshd__permit_root_login)
+	)
+%}
+
+# Local network
+Match Address {{ user_management_sshd_local_subnets | join(',') }}
+	PermitRootLogin {{ (user_management_sshd_local_permit_root_login == 'without-password') | ternary('without-password', user_management_sshd_local_permit_root_login | bool | ternary('yes', 'no')) }}
+	PasswordAuthentication {{ user_management_sshd_local_password_authentication | bool | ternary('yes', 'no') }}
+{% endif %}

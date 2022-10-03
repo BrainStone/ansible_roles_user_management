@@ -12,3 +12,9 @@ user_management_sshd_include: true
 # These two variables control which authentication types are allowed
 user_management_sshd_password_authentication: true
 user_management_sshd_permit_root_login: 'without-password'
+
+# These two variables control which authentication types are allowed from local connection
+user_management_sshd_local_password_authentication: true
+user_management_sshd_local_permit_root_login: 'without-password'
+# List of local subnets
+user_management_sshd_local_subnets: []
