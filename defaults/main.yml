@@ -30,6 +30,7 @@ user_management_sshd_local_subnets: >
       ansible_interfaces | reject('match', '^(lo|docker[0-9]+)$') | sort
     ) |
     selectattr('value.active', 'true') |
+    selectattr('value.ipv4', 'defined') |
     json_query('[].value.ipv4.[network, netmask].join(`/`, @)') |
     map('ansible.utils.ipaddr', 'network/prefix')
   }}
