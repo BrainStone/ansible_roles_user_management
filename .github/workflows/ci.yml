@@ -1,0 +1,49 @@
+---
+name: CI
+
+on: [ push, pull_request ]
+
+jobs:
+  lint:
+    name: Check Syntax
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.5.10'
+
+      - name: Install Ansible 2.10
+        run: pip install 'ansible>=2.10,<2.11'
+
+      - name: Check Ansible version
+        run: ansible --version
+
+      - name: Install Galaxy dependencies
+        run: '[[ -f meta/requirements.yml ]] && ansible-galaxy install -r meta/requirements.yml'
+
+      - name: Check Ansible playbook syntax
+        run: ANSIBLE_ROLES_PATH="$HOME/.ansible/roles/:../" ansible-playbook -v tests/test.yml -i tests/inventory --syntax-check
+
+  release:
+    name: Release role to Galaxy
+    runs-on: ubuntu-latest
+    needs: lint
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Get current tag
+        id: get-current-tag
+        uses: zingimmick/github-action-get-current-tag@v1
+
+      - name: 'Checkout git repo'
+        uses: actions/checkout@v4
+
+      - name: 'Release on galaxy'
+        uses: ansible-actions/ansible-galaxy-action@v1.0.1
+        with:
+          galaxy_api_key: ${{ secrets.GALAXY_API_KEY }}
+          git_branch: ${{ steps.get-current-tag.outputs.tag }}
